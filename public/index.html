@@ -3,25 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Deploy ke Vercel</title>
+  <title>DEPLOY KE VERCEL</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <div class="container">
     
-<!-- FOTO PROFIL BULAT (UKURAN LEBIH BESAR) -->
+<!-- FOTO PROFIL BULAT -->
 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
   <img src="https://files.catbox.moe/fjhlmo.jpg" alt="Foto Profil" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid #ccc;">
 </div>
     
-    <h1>Deploy ke Vercel</h1>
+    <h1>DEPLOY VERCEL</h1>
     <p>Upload file ZIP project Anda dan masukkan nama project untuk deploy ke Vercel.</p>
 
     <!-- Tab Navigation -->
     <div class="tab-nav">
       <button class="tab-btn active" onclick="showTab('deploy')">Deploy</button>
-      <button class="tab-btn" onclick="showTab('list')">List Deploy</button>
-    </div>
+      </div>
 
     <!-- Deploy Tab -->
     <div id="deploy-tab" class="tab-content active">
@@ -43,17 +42,7 @@
       <div id="result" class="result"></div>
     </div>
 
-    <!-- List Deploy Tab -->
-    <div id="list-tab" class="tab-content">
-      <div class="form-group">
-        <label for="tokenInput">Token Vercel (opsional):</label>
-        <input type="text" id="tokenInput" placeholder="Kosongkan untuk menggunakan token default">
-      </div>
-
-      <button id="listBtn" onclick="loadDeployments()">Muat Daftar Deployment</button>
-
-      <div id="deploymentsList" class="deployments-list"></div>
-    </div>
+    
   </div>
 
   <script>
@@ -133,90 +122,8 @@
         result.className = `result ${type} show`;
     }
 
-    async function loadDeployments() {
-        const listBtn = document.getElementById('listBtn');
-        const deploymentsList = document.getElementById('deploymentsList');
-        const token = document.getElementById('tokenInput').value;
-
-        listBtn.innerHTML = '<span class="loading"></span>Memuat...';
-        listBtn.disabled = true;
-        deploymentsList.innerHTML = '';
-
-        try {
-            const url = token ? `/api/listdeploy?token=${encodeURIComponent(token)}` : '/api/listdeploy';
-            const response = await fetch(url);
-            const data = await response.json();
-
-            if (data.success && data.deployments) {
-                displayDeployments(data.deployments);
-            } else if (data.message) {
-                deploymentsList.innerHTML = `<div class="no-deployments">${data.message}</div>`;
-            } else {
-                deploymentsList.innerHTML = `<div class="error-message">❌ ${data.error}</div>`;
-            }
-
-        } catch (error) {
-            deploymentsList.innerHTML = `<div class="error-message">❌ Error: ${error.message}</div>`;
-        } finally {
-            listBtn.innerHTML = 'Muat Daftar Deployment';
-            listBtn.disabled = false;
-        }
-    }
-
-    function displayDeployments(deployments) {
-        const deploymentsList = document.getElementById('deploymentsList');
-
-        let html = '<div class="deployments-header">📋 Daftar Deployment Vercel</div>';
-
-        deployments.forEach((deployment) => {
-            html += `
-                <div class="deployment-item">
-                    <div class="deployment-info">
-                        <h3>${deployment.name || 'Unnamed Project'}</h3>
-                        <p><strong>URL:</strong> <a href="https://${deployment.url}" target="_blank">https://${deployment.url}</a></p>
-                        <p><strong>Status:</strong> <span class="status ${deployment.state}">${deployment.state}</span></p>
-                        <p><strong>ID:</strong> <code>${deployment.uid}</code></p>
-                    </div>
-                    <button class="delete-btn" onclick="deleteDeployment('${deployment.uid}')">🗑️ Hapus</button>
-                </div>
-            `;
-        });
-
-        deploymentsList.innerHTML = html;
-    }
-
-    async function deleteDeployment(deploymentId) {
-        if (!confirm('Apakah Anda yakin ingin menghapus deployment ini?')) {
-            return;
-        }
-
-        const token = document.getElementById('tokenInput').value;
-
-        try {
-            const response = await fetch('/api/deldeploy', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    token: token || undefined,
-                    deploymentId: deploymentId
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                alert('✅ ' + data.message);
-                loadDeployments();
-            } else {
-                alert('❌ ' + data.error);
-            }
-
-        } catch (error) {
-            alert('❌ Error: ' + error.message);
-        }
-    }
-  </script>
+    
+      </script>
+  <script src="snow.js"></script>
 </body>
-</html>
+</html
